@@ -1,9 +1,10 @@
 const http = require('http')
 const express = require('express')
 const app = express()
-const { query ,insert } = require('./src/db/dbConnect')
 const { getNomes } = require('./src/apis/axios')
 const { arrDates } = require('./src/helpers/dates') 
+const { query, insert, testConn } = require('./src/db/dbConnect')
+const db = require('./src/config/db.js')
 require('dotenv/config') 
 
     /**
@@ -17,11 +18,18 @@ require('dotenv/config')
     ) 
     app.use(express.json())
 
-
-
 app.get('/', async (req, res) => {
-  let query = await db.query('Select * from clients')  
+  console.log('aquii')
+  let data = await db('clients')
+  return res.send(data)
 })
+
+app.get('/teste-connection', async (req, res) => {
+  let teste = testConn()
+  res.send(teste)
+})
+
+
 
 app.get('/insertRandomClients', async(req, res) => {
   let nomes = await getNomes()
