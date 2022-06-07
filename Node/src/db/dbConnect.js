@@ -11,13 +11,19 @@ async function connect(){
 }
 
 
-const query = async (sql) => {
+const query = async sql => {
     let conn = await connect()
 
     const [rows] = await conn.query(sql)
   
     return rows
 }
+
+const insert = async sql => {
+    let conn = await connect()
+
+    await conn.query(sql)
+}
   
   
-module.exports = { query }
+module.exports = { query, insert }
