@@ -19,4 +19,4 @@ Route::get('/', function () {
 });
 
 
-Route::post('client/insert',  [ClienteController::class,'insertClient']);
+Route::post('client/insert',  [ClienteController::class,'getClients']);

@@ -23,12 +23,31 @@ const arrDates = size => {
 }
 
 const formataDataParaInsertNaDb = data => {
+    let trintaDias = ['04','06','09','11']
+    let fev = '02'
+    
 
     let dia =  data.getDate() < 10 ? '0' + data.getDate() :  data.getDate()
     let mes =  data.getMonth() < 10 ? '0' + data.getMonth():  data.getMonth()
 
     dia = dia === '00' ? '01' : dia
     mes = mes === '00' ? '01' : mes
+
+    if(trintaDias.indexOf(mes) > -1){
+        
+        if(dia > 30) {
+            console.log('aqui trinta', dia)
+            dia = 30
+        }
+    }
+
+    if(mes === fev) {
+        
+        if (dia > 28) {
+            console.log('aqui fev', dia)
+            dia = 26
+        }
+    }
 
     return `${data.getFullYear()}-${mes}-${dia}`
 }
