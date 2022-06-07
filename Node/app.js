@@ -33,7 +33,7 @@ app.get('/insertRandomClients', async(req, res) => {
     let mes = data.getMonth() < 10 ? '0' + data.getMonth() : data.getMonth()
     acc.push({
       nome : curr,
-      nascimento : `${data.getFullYear()}-${mes}-${dia}`
+      nascimento : `${data.getFullYear()}/${mes}/${dia}`
     })
     return acc
   }, [])
