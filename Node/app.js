@@ -1,9 +1,9 @@
 const http = require('http')
 const express = require('express')
 const app = express()
-const { getNomes } = require('./src/apis/axios')
-const { arrDates } = require('./src/helpers/dates') 
-const { query, insert, testConn } = require('./src/db/dbConnect')
+const { getNomes } = require('./src/apis/getNomes.js')
+const { arrDates, formataDataParaInsertNaDb } = require('./src/helpers/dates') 
+const { testConn } = require('./src/db/dbConnect')
 const db = require('./src/config/db.js')
 require('dotenv/config') 
 
@@ -18,10 +18,52 @@ require('dotenv/config')
     ) 
     app.use(express.json())
 
-app.get('/', async (req, res) => {
-  console.log('aquii')
-  let data = await db('clients')
-  return res.send(data)
+app.get('/fillDB', async (req, res) => {
+  
+  /* let insert = await db('clients')
+                     .insert({
+                      nome:'Carlos Alberto Ribas Junior',
+                      nascimento : '1998-10-12'
+                     })
+
+  console.log(insert)  */ 
+
+ 
+  let nomes = await getNomes()
+  let datas = arrDates(nomes.length)
+
+
+  datas.forEach( data => {
+    let dataFormatadaParaInsert = formataDataParaInsertNaDb(data)
+    console.log(dataFormatadaParaInsert)
+  })
+
+  let clients = nomes.reduce((acc, curr, index) => {
+    let client = {
+      nome : curr.nome,
+      nascimento : formataDataParaInsertNaDb(datas[index])
+    }
+    acc.push(client)
+
+    return acc
+  }, [])
+
+
+  try {
+    
+    await db('clients').insert(clients)
+
+    res.send (
+      await db('clients')
+    )
+  } catch (error) {
+    console.log(error)
+  }
+
+})
+
+app.get('/testeApiNomes', async (req, res) => {
+    
 })
 
 app.get('/teste-connection', async (req, res) => {
@@ -29,32 +71,6 @@ app.get('/teste-connection', async (req, res) => {
   res.send(teste)
 })
 
-
-
-app.get('/insertRandomClients', async(req, res) => {
-  let nomes = await getNomes()
-  let arrDatas = arrDates(nomes.length)
-
-  let objQuery = nomes.reduce( (acc, curr, index) => {
-    let data = arrDatas[index]
-    let dia = data.getDate() < 10 ? '0' + data.getDate() : data.getDate()
-    let mes = data.getMonth() < 10 ? '0' + data.getMonth() : data.getMonth()
-    acc.push({
-      nome : curr,
-      nascimento : `${data.getFullYear()}/${mes}/${dia}`
-    })
-    return acc
-  }, [])
-  //res.send(objQuery)
-  
-  objQuery.forEach( async pessoa => {
-    await insert(`Insert into api.clients (nome, nascimento) values ( '${pessoa.nome}', '${pessoa.nascimento}')`)
-  });
-
-  let allClients = await query('Select * from api.clients;') 
-
-  res.send(objQuery)
-})
 
 try {
   app.listen(9090, async (req, res) => console.log('Rodando em http://localhost:9090'))

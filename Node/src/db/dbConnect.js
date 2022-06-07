@@ -20,7 +20,7 @@ const query = async sql => {
 const insert = async sql => {
     let conn = await connect()
 
-    await conn.query(sql)
+    conn.query(sql)
 }
   
 
@@ -34,4 +34,4 @@ const testConn = async () => {
     }
 }
   
-module.exports = { query, insert, testConn }
+module.exports = { testConn }
