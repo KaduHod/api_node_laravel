@@ -30,7 +30,7 @@ const testConn = async () => {
         return true
     } catch (err) {
         console.log('Problema na conexão', err)
-        return false
+        return {message : 'Problema na conexão', err}
     }
 }
   

@@ -10,9 +10,18 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'clients';
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
 
-    public function getAll(){
-        
-    }
+
 }

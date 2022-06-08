@@ -14,9 +14,11 @@ use \App\Http\Controllers\ClienteController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+ Route::group(['prefix' => 'cliente'], function(){
+    Route::get('/',  [ClienteController::class,'index']);
+    Route::get('/export',  [ClienteController::class,'export']);
 });
 
 
-Route::post('client/insert',  [ClienteController::class,'getClients']);
+
