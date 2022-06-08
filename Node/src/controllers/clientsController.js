@@ -1,45 +1,44 @@
-const { getNames, getSortedMixedNames } = require('../helpers/getNomes')
 const { arrDates, formataDataParaInsertNaDb } = require('../helpers/dates')
+const { getNames, getSortedMixedNames } = require('../helpers/getNomes')
 const { shuffle } = require('../helpers/util')
 const db = require('../db/dbKnex')
 
 class clientsController {
 
-    async createRandomClientsAndInsertIntoDb () {
-        let namesList = await getNames()
-        let names     = getSortedMixedNames(namesList)
-        let dates     = arrDates(names.length)
+    async createRandomClientsAndInsertIntoDatabase(req, res) {
+        const namesList = await getNames()
+        const names = getSortedMixedNames(namesList)
+        const dates = arrDates(names.length)
 
-        let clients = names.reduce( (acc, curr, index) => {
-
-            let client = { nome : curr,  nascimento : formataDataParaInsertNaDb(dates[index]) }
-
-            acc.push( client )
-
-            return acc
-
-        }, [])
+        const clients = names.map( (name, index) => ({
+            nome: name,
+            nascimento: formataDataParaInsertNaDb(dates[index]) 
+        }))
 
         try {
             await db('clients').insert(shuffle(clients))
-            return { Success: true, message: 'Random clients genereted and inserted into database!' }
+            return res.send({ success: true, message: 'Random clients genereted and inserted into database!' })
         } catch (error) {
             console.log(error)
-            return { Success: false, message: error }
+            return res.send({ success: false, message: error })
         }
     }
 
-
-    async clearTableClients () {
+    async clearTableClients(req, res) {
         try {
-
             await db('clients').del()
-
-            return { Success: true, message: 'Table clients cleared!' }
-
+            return { success: true, message: 'Table clients cleared!' }
         } catch (error) {
-            return { Success: false, message: error }
+            return { success: false, message: error }
+        }
+    }
 
+    async getClients(req, res) {
+        try {
+            let clients = await db('clients')
+            return res.send({ success: true, content: clients })
+        } catch (error) {
+            return res.send({ success: true, message: error })
         }
     }
 }

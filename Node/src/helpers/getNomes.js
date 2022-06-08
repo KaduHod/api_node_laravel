@@ -1,11 +1,14 @@
-const axios = require('./axios')
-const { juntaNome } = require('../helpers/util')
-const nomesUrl = 'https://servicodados.ibge.gov.br/api/v2/censos/nomes/'
+const axios = require('../apis/axios')
+const { juntaNome } = require('./util')
+const listaDeNomes = 'https://servicodados.ibge.gov.br/api/v2/censos/nomes/'
 
-
+/**
+ * 
+ * @returns lista de nomes da api do governo
+ */
 const getNames = async () => {
   try {
-    let {data} = await axios.get(nomesUrl)
+    const {data} = await axios.get(listaDeNomes)
     return data.map(item => item.nome)
   } catch (error) {
     console.log(error)
@@ -29,7 +32,6 @@ const getSortedMixedNames = namesList => {
     }
     cont++
   }
-
 
   return arrNames
 }
