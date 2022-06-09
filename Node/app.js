@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const clientRoutes = require('./src/clientRoutes')
+const apiRoutes = require('./src/apiRoutes')
 require('dotenv/config')
 
 app.use(
@@ -10,6 +11,7 @@ app.use(
 )
 app.use(express.json())
 
+app.use('/', apiRoutes);
 app.use('/clients', clientRoutes);
 
 try {

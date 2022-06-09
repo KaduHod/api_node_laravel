@@ -10,9 +10,8 @@ class clientsController {
         const names = getSortedMixedNames(namesList)
         const dates = arrDates(names.length)
 
-        const clients = names.map( (name, index) => ({
-            nome: name,
-            nascimento: formataDataParaInsertNaDb(dates[index]) 
+        const clients = names.map( (nome, index) => ({
+            nome, nascimento: formataDataParaInsertNaDb(dates[index]) 
         }))
 
         try {

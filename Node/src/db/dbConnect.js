@@ -9,20 +9,7 @@ const connect = async () => {
 
     return connection
 }
-
-
-const query = async sql => {
-    let conn = await connect()
-
-    return conn.query(sql)
-}
-
-const insert = async sql => {
-    let conn = await connect()
-
-    conn.query(sql)
-}
-  
+ 
 
 const testConn = async () => {
     try {
