@@ -1,7 +1,7 @@
 const { arrDates, formataDataParaInsertNaDb } = require('../helpers/dates')
 const { getNames, getSortedMixedNames } = require('../helpers/getNomes')
 const { shuffle } = require('../helpers/util')
-const db = require('../db/dbKnex')
+const db = require('../database/dbKnex')
 
 class apiController {
 

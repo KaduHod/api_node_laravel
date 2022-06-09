@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
-const clientRoutes = require('./src/clientRoutes')
-const apiRoutes = require('./src/apiRoutes')
+const clientRoutes = require('./src/routes/clientRoutes')
+const apiRoutes = require('./src/routes/apiRoutes')
 require('dotenv/config')
 
 app.use(

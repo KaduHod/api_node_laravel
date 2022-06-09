@@ -14,6 +14,7 @@ const connect = async () => {
 const testConn = async () => {
     try {
         await connect()
+        
         return true
     } catch (err) {
         console.log('Problema na conexão', err)
