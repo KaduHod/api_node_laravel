@@ -12,8 +12,8 @@ function getRandomDate() {
 
 
 const arrDates = size => {
-    cont=0
-    arr = [];
+    let cont=0
+    const arr = [];
     while ( cont < size ) {
         arr.push(  getRandomDate() )
         cont++
@@ -22,34 +22,12 @@ const arrDates = size => {
     return arr
 }
 
-const formataDataParaInsertNaDb = data => {
-    let trintaDias = ['04','06','09','11']
-    let fev = '02'
-    
 
-    let dia =  data.getDate() < 10 ? '0' + data.getDate() :  data.getDate()
-    let mes =  data.getMonth() < 10 ? '0' + data.getMonth():  data.getMonth()
+/**
+ * 
+ * @param {*} date em string
+ * @returns data validada com timestamp
+ */
+const validateDateWithTimestamp = date => new Date(Date.parse(date))
 
-    dia = dia === '00' ? '01' : dia
-    mes = mes === '00' ? '01' : mes
-
-    if(trintaDias.indexOf(mes) > -1){
-        
-        if(dia > 30) {
-            console.log('aqui trinta', dia)
-            dia = 30
-        }
-    }
-
-    if(mes === fev) {
-        
-        if (dia > 28) {
-            console.log('aqui fev', dia)
-            dia = 26
-        }
-    }
-
-    return `${data.getFullYear()}-${mes}-${dia}`
-}
-
-module.exports = { randomDate, arrDates, formataDataParaInsertNaDb } 
+module.exports = { randomDate, arrDates, validateDateWithTimestamp } 

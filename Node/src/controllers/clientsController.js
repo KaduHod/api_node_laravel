@@ -1,4 +1,4 @@
-const { arrDates, formataDataParaInsertNaDb } = require('../helpers/dates')
+const { arrDates, validateDateWithTimestamp } = require('../helpers/dates')
 const { getNames, getSortedMixedNames } = require('../helpers/getNomes')
 const { shuffle } = require('../helpers/util')
 const db = require('../database/dbKnex')
@@ -11,7 +11,7 @@ class clientsController {
         const dates = arrDates(names.length)
 
         const clients = names.map( (nome, index) => ({
-            nome, nascimento: formataDataParaInsertNaDb(dates[index]) 
+            nome, nascimento: validateDateWithTimestamp(dates[index]) 
         }))
 
         try {
@@ -37,7 +37,7 @@ class clientsController {
             let clients = await db('clients')
             return res.send({ success: true, content: clients })
         } catch (error) {
-            return res.send({ success: true, message: error })
+            return res.send({ success: false, message: error })
         }
     }
 }
